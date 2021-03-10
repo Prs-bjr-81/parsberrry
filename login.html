@@ -14,6 +14,7 @@
 
 
     <!-- Optional styles and scripts of your own -->
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.6.1/firebase-ui-auth.css" />
 
 
 </head>
@@ -55,9 +56,12 @@
 
     <div class="container">
         <h1 class="display-4">Welcome to Locaf!</h1>
+        <h2>Welcome to Parsa's Coffe App :)</h2>
+        <h2>Let's get you logged in.</h2>
+        <div id="firebaseui-auth-container"></div>
+        <div id="loader">Loading...</div>
     </div>
-    <h2>Welcome to Parsa's Coffe App :)</h2>
-    <button type="button" class="btn btn-warning">Login/Sign up</button>
+
 
 
 
@@ -68,9 +72,62 @@
         integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous">
     </script>
 
+    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/ui/4.6.1/firebase-ui-auth.js"></script>
+
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyCMgzOWwpyVq511UCuLkjV9TRfurXdQ1pc",
+            authDomain: "garlic-5d0c6.firebaseapp.com",
+            projectId: "garlic-5d0c6",
+            storageBucket: "garlic-5d0c6.appspot.com",
+            messagingSenderId: "312445669448",
+            appId: "1:312445669448:web:09e3691555f8558f63887d"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+    </script>
     <!--------------------------------------------------------------------->
     <!-- JS files: Your own JavaScript functions included here    -->
     <!--------------------------------------------------------------------->
+    <script>
+        // Initialize the FirebaseUI Widget using Firebase.
+        var ui = new firebaseui.auth.AuthUI(firebase.auth());
+        var uiConfig = {
+            callbacks: {
+                signInSuccessWithAuthResult: function (authResult, redirectUrl) {
+                    // User successfully signed in.
+                    // Return type determines whether we continue the redirect automatically
+                    // or whether we leave that to developer to handle.
+                    return true;
+                },
+                uiShown: function () {
+                    // The widget is rendered.
+                    // Hide the loader.
+                    document.getElementById('loader').style.display = 'none';
+                }
+            },
+            // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
+            signInFlow: 'popup',
+            signInSuccessUrl: 'main.html',
+            signInOptions: [
+                // Leave the lines as is for the providers you want to offer your users.
+                
+                
+                firebase.auth.EmailAuthProvider.PROVIDER_ID,
+
+            ],
+            // Terms of service url.
+            tosUrl: '<your-tos-url>',
+            // Privacy policy url.
+            privacyPolicyUrl: '<your-privacy-policy-url>'
+        };
+        // The start method will wai t until the DOM is loaded.
+        ui.start('#firebaseui-auth-container', uiConfig);
+    </script>
 
     <nav class="navbar fixed-bottom navbar-light bg-light">
         <div class="container-fluid">
